@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario extendida para órdenes de venta -->
+        <record id="view_order_form_inherit_custom" model="ir.ui.view">
+            <field name="name">sale.order.form.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar número de cotización personalizado después del campo name -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="custom_quotation_number" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="invisible" >1</attribute>
+                </xpath>
+                
+                <!-- Agregar información del cliente en una nueva página -->
+                <xpath expr="//page[@name='other_information']" position="before">
+                    <page string="Información de Cotización" name="quotation_info">
+                        <group>
+                            <group string="Información del Cliente">
+                                <field name="client_ruc" placeholder="Ej: 20455005869"/>
+                                <field name="client_address_detail" placeholder="Dirección completa del cliente"/>
+                            </group>
+                            <group string="Vigencia de Cotización">
+                                <!-- Usar campo nativo validity_date en lugar de campo personalizado -->
+                                <field name="validity_date" string="Fecha de Vigencia"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Asunto de la Cotización">
+                            <field name="quotation_subject" nolabel="1" placeholder="Ej: Cotización para la contratación del Suministro de insumos..."/>
+                        </group>
+                        
+                        <group string="Condiciones Comerciales">
+                            <group>
+                                <field name="delivery_place"/>
+                                <field name="warranty_terms"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Mejoras a las Especificaciones Técnicas">
+                            <field name="technical_improvements" nolabel="1" widget="html"/>
+                        </group>
+                    </page>
+                </xpath>
+                
+                <!-- Agregar campos en vista de lista para mejor visualización -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="custom_quotation_number" optional="show"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Vista de lista extendida -->
+        <record id="view_quotation_tree_inherit_custom" model="ir.ui.view">
+            <field name="name">sale.order.tree.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="optional" >hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="custom_quotation_number" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="client_ruc" optional="hide"/>
+                </xpath>
+                <!-- Mostrar validity_date en lugar de quotation_validity -->
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vista de búsqueda extendida -->
+        <record id="view_sales_order_filter_inherit_custom" model="ir.ui.view">
+            <field name="name">sale.order.search.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="custom_quotation_number"/>
+                    <field name="client_ruc"/>
+                    <field name="quotation_subject"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

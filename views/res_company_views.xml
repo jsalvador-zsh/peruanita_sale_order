@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario extendida para empresa -->
+        <record id="view_company_form_inherit_custom" model="ir.ui.view">
+            <field name="name">res.company.form.custom</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar RUC después del nombre de la empresa -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="company_ruc" placeholder="Ej: 20455005869"/>
+                </xpath>
+                
+                <!-- Agregar dirección detallada después de la dirección normal -->
+                <xpath expr="//field[@name='street2']" position="after">
+                    <field name="detailed_address" string="Dirección Detallada para Cotizaciones" 
+                           placeholder="Ej: Calle Francia Mza. A Lote. 9 Asoc. APTASA Parque Industrial, Cerro Colorado"/>
+                </xpath>
+                
+                <!-- Agregar nueva pestaña para configuración de cotizaciones -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Configuración de Cotizaciones" name="quotation_config">
+                        
+                        <group string="Información General">
+                            <p class="text-muted">
+                                Configure los textos y términos que aparecerán por defecto en las cotizaciones.
+                                Para información de contacto y cuentas bancarias, use las pestañas correspondientes
+                                de contacto y cuentas bancarias de la empresa.
+                            </p>
+                        </group>
+                        
+                        <group string="Términos Comerciales por Defecto">
+                            <group>
+                                <field name="standard_delivery_terms"/>
+                                <field name="standard_payment_terms"/>
+                            </group>
+                            <group>
+                                <field name="standard_warranty_terms"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Textos de Cotización">
+                            <field name="quotation_intro_text" nolabel="1" widget="html" 
+                                   placeholder="Texto de introducción que aparece en las cotizaciones..."/>
+                        </group>
+                        
+                        <group string="Condiciones Generales">
+                            <field name="general_conditions_text" nolabel="1" widget="html"/>
+                        </group>
+                        
+                        <group string="Disclaimer de Pagos">
+                            <field name="payment_disclaimer" nolabel="1" widget="html"/>
+                        </group>
+                        
+                    </page>
+                </xpath>
+                
+            </field>
+        </record>
+    </data>
+</odoo>

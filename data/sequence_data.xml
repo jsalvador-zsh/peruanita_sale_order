@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Secuencia para numeración de cotizaciones personalizadas -->
+        <record id="seq_custom_quotation" model="ir.sequence">
+            <field name="name">Cotización Personalizada</field>
+            <field name="code">sale.order.custom.quotation</field>
+            <field name="prefix">COTIZACIÓN %(range_year)s</field>
+            <field name="suffix">-PE</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="use_date_range">True</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+        </record>
+
+        <!-- Rango de fechas para secuencia anual -->
+        <record id="seq_custom_quotation_range_2025" model="ir.sequence.date_range">
+            <field name="sequence_id" ref="seq_custom_quotation"/>
+            <field name="date_from">2025-01-01</field>
+            <field name="date_to">2025-12-31</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <!-- Datos iniciales para configuración de empresa principal -->
+        <record id="base.main_company" model="res.company" context="{'install_mode': True}">
+            <field name="quotation_intro_text">
+                &lt;p&gt;De nuestra mayor consideración&lt;/p&gt;
+                &lt;p&gt;Nos es grato dirigirnos a Usted, para saludarlo cordialmente a nombre de la Empresa, y por medio de la presente hacemos llegar nuestra cotización de acuerdo a la información remitida según el siguiente detalle:&lt;/p&gt;
+            </field>
+            <field name="general_conditions_text">
+                &lt;p&gt;Dicha cotización es a todo costo, incluye todos los tributos, seguros, transportes, inspecciones, pruebas y de ser el caso, los costos laborales respectivos, conforme a la legislación vigente, así como cualquier otro concepto que sea aplicable y que pueda incidir sobre el valor del servicio a contratar.&lt;/p&gt;
+                &lt;p&gt;Asimismo, confirmamos que la presente cotización cumple con todos los requerimientos establecidos en las Especificaciones técnicas remitidos.&lt;/p&gt;
+            </field>
+            <field name="payment_disclaimer">
+                &lt;p&gt;Todo pago debe ser realizado únicamente a través de depósitos y/o transferencias en nuestras cuentas bancarias a nombre de la empresa.&lt;/p&gt;
+            </field>
+            <field name="standard_delivery_terms">Puesto en almacén del cliente</field>
+            <field name="standard_payment_terms">De acuerdo a lo indicado en las Especificaciones Técnicas y/o bases de licitación.</field>
+            <field name="standard_warranty_terms">Tiempo de vida útil del producto.</field>
+            <field name="quotation_validity_days">30</field>
+            <field name="public_bank_name">Banco de la Nación</field>
+            <field name="private_bank_name">Banco Continental</field>
+        </record>
+
+        <!-- Regla de servidor para actualizar numeración automáticamente -->
+        <record id="server_action_update_quotation_number" model="ir.actions.server">
+            <field name="name">Actualizar Número de Cotización</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    for record in records:
+        if not record.custom_quotation_number or record.custom_quotation_number == '/':
+            record.write({
+                'custom_quotation_number': record._generate_custom_quotation_number()
+            })
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

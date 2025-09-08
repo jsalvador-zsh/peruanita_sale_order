@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_custom_user,sale.order.custom.user,sale.model_sale_order,sales_team.group_sale_salesman,1,1,1,0
+access_sale_order_custom_manager,sale.order.custom.manager,sale.model_sale_order,sales_team.group_sale_manager,1,1,1,1
+access_product_template_custom_user,product.template.custom.user,product.model_product_template,sales_team.group_sale_salesman,1,1,1,0
+access_product_template_custom_manager,product.template.custom.manager,product.model_product_template,sales_team.group_sale_manager,1,1,1,1
+access_res_company_custom_user,res.company.custom.user,base.model_res_company,sales_team.group_sale_salesman,1,0,0,0
+access_res_company_custom_manager,res.company.custom.manager,base.model_res_company,sales_team.group_sale_manager,1,1,1,0
+access_res_partner_bank_user,res.partner.bank.user,base.model_res_partner_bank,base.group_user,1,1,1,1

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Documento principal de orden de venta -->
+        <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+            <!-- Reemplazar TODO el external_layout -->
+            <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+                <t t-foreach="docs" t-as="o">
+                <t t-call="peruanita_bg_layout.peruanita_layout_background">
+                    <t t-set="company" t-value="o.company_id" />
+                    <t t-set="document_display_name" t-value="'ORDEN DE VENTA'" />
+                    <t t-set="contact_info" t-value="o.get_contact_info()" />
+                    
+                        <div class="page" style="margin-top:20px; margin-bottom:20px;">
+
+                            <!-- Encabezado con número de cotización -->
+                            <div class="row mb-2">
+                                <div class="col-12 text-center">
+                                    <h2 style="font-weight: bold; margin-bottom: 5px;">
+                                        <t t-esc="o.custom_quotation_number or o.name" />
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <!-- Fecha y lugar -->
+                            <div class="row mb-2">
+                                <div class="col-12 text-right">
+                                    <p style="margin-bottom: 10px;">
+                                        <t t-esc="o.get_formatted_date()" />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Información del cliente -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <p style="font-weight: bold; margin-bottom: 5px;">
+                                        <strong>Señores: </strong>
+                                        <t style="text-transform: uppercase;"
+                                            t-esc="o.partner_id.name" />
+                                    </p>
+                                    <p style="font-weight: bold; margin-bottom: 10px;">
+                                        <strong>Presente. –</strong>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Asunto -->
+                            <div class="row mb-2" t-if="o.quotation_subject">
+                                <div class="col-12">
+                                    <p style="margin-bottom: 5px;">
+                                        <strong>Asunto:</strong>
+                                        <t t-esc="o.quotation_subject" />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Saludo y presentación -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div t-field="o.company_id.quotation_intro_text"
+                                        style="margin-bottom: 10px;" />
+                                </div>
+                            </div>
+
+                            <!-- Tabla de productos -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <table class="table table-sm table-bordered"
+                                        style="font-size: 12px;">
+                                        <thead style="background-color: #f8f9fa;">
+                                            <tr style="font-weight: bold;">
+                                                <th
+                                                    style="width: 35%; text-align: center; padding: 8px;">
+                                                    DESCRIPCIÓN</th>
+                                                <th
+                                                    style="width: 15%; text-align: center; padding: 8px;">
+                                                    MARCA</th>
+                                                <th
+                                                    style="width: 10%; text-align: center; padding: 8px;">
+                                                    CANTIDAD</th>
+                                                <th
+                                                    style="width: 15%; text-align: center; padding: 8px;">
+                                                    UNIDAD</th>
+                                                <th
+                                                    style="width: 12.5%; text-align: center; padding: 8px;">PRECIO
+                                                    UNITARIO</th>
+                                                <th
+                                                    style="width: 12.5%; text-align: center; padding: 8px;">PRECIO
+                                                    TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.order_line" t-as="line">
+                                                <tr t-if="not line.display_type">
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong t-esc="line.name" />
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong
+                                                            t-esc="line.product_id.product_brand_id.name if line.product_id.product_brand_id else ''" />
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong
+                                                            t-esc="'{:,.0f}'.format(line.product_uom_qty)" />
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong
+                                                            t-esc="line.product_uom.name.upper()" />
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong>S/. <t
+                                                                t-esc="'{:,.2f}'.format(line.price_unit)" /></strong>
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <strong>S/. <t
+                                                                t-esc="'{:,.2f}'.format(line.price_total)" /></strong>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <!-- Fila de total -->
+                                            <tr>
+                                                <td colspan="5"
+                                                    style="text-align: right; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                    TOTAL:
+                                                </td>
+                                                <td
+                                                    style="text-align: center; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                    S/. <t t-esc="'{:,.2f}'.format(o.amount_total)" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Condiciones generales -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div t-field="o.company_id.general_conditions_text" />
+                                </div>
+                            </div>
+
+                            <!-- Mejoras técnicas -->
+                            <div class="row mb-2" t-if="o.technical_improvements">
+                                <div class="col-12">
+                                    <span style="font-weight: bold; margin-bottom: 10px;">1.-
+                                        MEJORAS A
+                                        LAS ESPECIFICACIONES TÉCNICAS - FACTORES DE EVALUACIÓN</span>
+                                    <div t-field="o.technical_improvements" />
+                                </div>
+                            </div>
+
+                            <!-- Condiciones comerciales -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span style="font-weight: bold; margin-bottom: 10px;">CONDICIONES
+                                        COMERCIALES:</span>
+                                    <ul style="list-style-type: disc; margin-left: 20px;">
+                                        <li>Plazo de ejecución/Entrega: Según Especificaciones
+                                            Técnicas.</li>
+                                        <li>
+                                            <strong>Lugar de entrega: <t
+                                                    t-esc="o.delivery_place or o.company_id.standard_delivery_terms" />
+                                                .</strong>
+                                        </li>
+                                        <li>Forma de pago: <t
+                                                t-esc="o.company_id.standard_payment_terms" /></li>
+                                        <li>Presentación: Según Especificaciones Técnicas.</li>
+                                        <li>Garantía: <t
+                                                t-esc="o.warranty_terms or o.company_id.standard_warranty_terms" />
+                                            / Vigencia: <t
+                                                t-esc="o.get_quotation_validity_days()" />
+                                            días</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Disclaimer de pagos -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div t-field="o.company_id.payment_disclaimer" />
+                                </div>
+                            </div>
+
+                            <!-- Cuentas bancarias -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <t t-set="bank_accounts"
+                                        t-value="o.get_company_bank_accounts()" />
+                                    <t t-if="bank_accounts">
+                                        <table class="table table-sm table-bordered"
+                                            style="font-size: 14px; max-width: 600px;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr style="font-weight: bold;">
+                                                    <th style="text-align: center; padding: 8px;">Cuentas
+                                                        Bancarias</th>
+                                                    <th style="text-align: center; padding: 8px;">Nro.
+                                                        Cuenta</th>
+                                                    <th style="text-align: center; padding: 8px;">
+                                                        CCI</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="bank_accounts" t-as="bank">
+                                                    <tr>
+                                                        <td style="padding: 8px; font-weight: bold;">
+                                                            <t t-esc="bank['bank']" /> (<t
+                                                                t-esc="bank['type']" />) </td>
+                                                        <td
+                                                            style="text-align: center; padding: 8px; font-weight: bold;">
+                                                            <t t-esc="bank['account']" />
+                                                        </td>
+                                                        <td
+                                                            style="text-align: center; padding: 8px; font-weight: bold;">
+                                                            <strong t-esc="bank['cci']" />
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Despedida y firma -->
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <p style="margin-bottom: 30px;">Atentamente,</p>
+                                    <p style="margin-bottom: 80px;"></p>
+                                    <div style="margin-bottom: 20px;">
+                                        <p
+                                            style="border-top: 1px solid black; width: 300px; text-align: center; margin-bottom: 5px;"></p>
+                                        <p style="font-weight: bold; margin-bottom: 5px;">Firma y
+                                            Sello</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Información de contacto usando campos nativos -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <p t-if="contact_info['phones']">
+                                        <strong>Contacto: </strong>
+                                        <t t-esc="contact_info['phones']" />
+                                    </p>
+                                    <p t-if="contact_info['email']">
+                                        <strong>Email: </strong>
+                                        <t t-esc="contact_info['email']" />
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
