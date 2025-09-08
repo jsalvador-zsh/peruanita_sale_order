@@ -40,9 +40,6 @@
             <field name="standard_delivery_terms">Puesto en almacén del cliente</field>
             <field name="standard_payment_terms">De acuerdo a lo indicado en las Especificaciones Técnicas y/o bases de licitación.</field>
             <field name="standard_warranty_terms">Tiempo de vida útil del producto.</field>
-            <field name="quotation_validity_days">30</field>
-            <field name="public_bank_name">Banco de la Nación</field>
-            <field name="private_bank_name">Banco Continental</field>
         </record>
 
         <!-- Regla de servidor para actualizar numeración automáticamente -->
