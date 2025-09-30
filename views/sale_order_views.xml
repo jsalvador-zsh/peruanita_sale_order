@@ -8,30 +8,38 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 
-                <!-- Agregar número de cotización personalizado después del campo name -->
+                <!-- Agregar selector de tipo de empresa -->
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="quotation_company_type" widget="radio" options="{'horizontal': true}"/>
+                </xpath>
+                
+                <!-- Agregar número de cotización personalizado -->
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="custom_quotation_number" readonly="1"/>
                 </xpath>
+                
                 <xpath expr="//field[@name='name']" position="attributes">
-                    <attribute name="invisible" >1</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 
-                <!-- Agregar información del cliente en una nueva página -->
+                <!-- Páginas específicas por tipo de empresa -->
                 <xpath expr="//page[@name='other_information']" position="before">
-                    <page string="Información de Cotización" name="quotation_info">
+                    
+                    <!-- PÁGINA COMÚN PARA TODAS LAS EMPRESAS -->
+                    <page string="Información General" name="quotation_info_common">
                         <group>
                             <group string="Información del Cliente">
                                 <field name="client_ruc" placeholder="Ej: 20455005869"/>
                                 <field name="client_address_detail" placeholder="Dirección completa del cliente"/>
                             </group>
                             <group string="Vigencia de Cotización">
-                                <!-- Usar campo nativo validity_date en lugar de campo personalizado -->
                                 <field name="validity_date" string="Fecha de Vigencia"/>
                             </group>
                         </group>
                         
                         <group string="Asunto de la Cotización">
-                            <field name="quotation_subject" nolabel="1" placeholder="Ej: Cotización para la contratación del Suministro de insumos..."/>
+                            <field name="quotation_subject" nolabel="1" 
+                                   placeholder="Ej: Cotización para la contratación del Suministro de insumos..."/>
                         </group>
                         
                         <group string="Condiciones Comerciales">
@@ -40,16 +48,38 @@
                                 <field name="warranty_terms"/>
                             </group>
                         </group>
-                        
+                    </page>
+                    
+                    <!-- PÁGINA ESPECÍFICA PERUANITA -->
+                    <page string="Información Peruanita" name="quotation_info_peruanita"
+                          invisible="quotation_company_type != 'peruanita'">
                         <group string="Mejoras a las Especificaciones Técnicas">
-                            <field name="technical_improvements" nolabel="1" widget="html"/>
+                            <field name="technical_improvements_peruanita" nolabel="1" widget="html"/>
                         </group>
                     </page>
-                </xpath>
-                
-                <!-- Agregar campos en vista de lista para mejor visualización -->
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="custom_quotation_number" optional="show"/>
+                    
+                    <!-- PÁGINA ESPECÍFICA GIBBOR -->
+                    <page string="Información Gibbor" name="quotation_info_gibbor"
+                          invisible="quotation_company_type != 'gibbor'">
+                        <group>
+                            <field name="gibbor_attention" placeholder="Nombre de la persona de atención"/>
+                        </group>
+                        <group string="Mejoras a las Especificaciones Técnicas">
+                            <field name="technical_improvements_gibbor" nolabel="1" widget="html"/>
+                        </group>
+                    </page>
+                    
+                    <!-- PÁGINA ESPECÍFICA CORPEALIM -->
+                    <page string="Información Corpealim" name="quotation_info_corpealim"
+                          invisible="quotation_company_type != 'corpealim'">
+                        <group>
+                            <field name="corpealim_attention" placeholder="Nombre de la persona de atención"/>
+                        </group>
+                        <group string="Mejoras a las Especificaciones Técnicas">
+                            <field name="technical_improvements_corpealim" nolabel="1" widget="html"/>
+                        </group>
+                    </page>
+                    
                 </xpath>
                 
             </field>
@@ -62,15 +92,15 @@
             <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="attributes">
-                    <attribute name="optional" >hide</attribute>
+                    <attribute name="optional">hide</attribute>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="quotation_company_type" optional="show"/>
                     <field name="custom_quotation_number" optional="show"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="client_ruc" optional="hide"/>
                 </xpath>
-                <!-- Mostrar validity_date en lugar de quotation_validity -->
                 <xpath expr="//field[@name='validity_date']" position="attributes">
                     <attribute name="optional">show</attribute>
                 </xpath>
@@ -84,9 +114,19 @@
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="quotation_company_type"/>
                     <field name="custom_quotation_number"/>
                     <field name="client_ruc"/>
                     <field name="quotation_subject"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                    <separator/>
+                    <filter string="Peruanita" name="peruanita" 
+                            domain="[('quotation_company_type', '=', 'peruanita')]"/>
+                    <filter string="Gibbor" name="gibbor" 
+                            domain="[('quotation_company_type', '=', 'gibbor')]"/>
+                    <filter string="Corpealim" name="corpealim" 
+                            domain="[('quotation_company_type', '=', 'corpealim')]"/>
                 </xpath>
             </field>
         </record>

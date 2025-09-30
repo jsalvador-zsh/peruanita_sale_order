@@ -27,6 +27,7 @@
         'views/res_partner_bank_views.xml',
         'views/sale_order_views.xml',
         'views/res_company_views.xml',
+        'reports/report_actions.xml',
         'reports/sale_order_templates.xml',
     ],
     'installable': True,

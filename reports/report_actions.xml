@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Reporte para PERUANITA -->
+        <record id="action_report_sale_order_peruanita" model="ir.actions.report">
+            <field name="name">Cotización Peruanita</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">peruanita_sale_order.report_saleorder_peruanita</field>
+            <field name="report_file">peruanita_sale_order.report_saleorder_peruanita</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
+        </record>
+
+        <!-- Reporte para GIBBOR -->
+        <record id="action_report_sale_order_gibbor" model="ir.actions.report">
+            <field name="name">Cotización Gibbor</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">peruanita_sale_order.report_saleorder_gibbor</field>
+            <field name="report_file">peruanita_sale_order.report_saleorder_gibbor</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
+        </record>
+
+        <!-- Reporte para CORPEALIM -->
+        <record id="action_report_sale_order_corpealim" model="ir.actions.report">
+            <field name="name">Cotización Corpealim</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">peruanita_sale_order.report_saleorder_corpealim</field>
+            <field name="report_file">peruanita_sale_order.report_saleorder_corpealim</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
+        </record>
+
+        <!-- Ocultar el reporte original de Odoo -->
+        <record id="sale.action_report_saleorder" model="ir.actions.report">
+            <field name="binding_model_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
