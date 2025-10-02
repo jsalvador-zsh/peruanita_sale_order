@@ -21,6 +21,8 @@ class SaleOrder(models.Model):
         copy=False
     )
     
+    distributor_id = fields.Many2one('res.partner', string='Distribuidor', tracking=True, help='Seleccione el distribuidior relacionado a la cotización')
+
     # ============ CAMPOS COMUNES ============
     client_ruc = fields.Char(
         string='RUC del Cliente',

@@ -12,6 +12,9 @@
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <field name="quotation_company_type" widget="radio" options="{'horizontal': true}"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="distributor_id" />
+                </xpath>
                 
                 <!-- Agregar número de cotización personalizado -->
                 <xpath expr="//field[@name='name']" position="after">
