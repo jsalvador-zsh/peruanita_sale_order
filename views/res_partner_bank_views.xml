@@ -8,11 +8,6 @@
             <field name="inherit_id" ref="account.view_partner_bank_form_inherit_account"/>
             <field name="arch" type="xml">
                 
-                <!-- Agregar campo de empresa al inicio -->
-                <xpath expr="//field[@name='acc_number']" position="before">
-                    <field name="company_type" widget="radio" options="{'horizontal': true}"/>
-                </xpath>
-                
                 <!-- Agregar campos después del número de cuenta -->
                 <xpath expr="//field[@name='acc_number']" position="after">
                     <field name="cci_number" placeholder="Ej: 018-101-000101238091-69"/>
@@ -31,7 +26,6 @@
                 
                 <!-- Agregar columnas adicionales -->
                 <xpath expr="//field[@name='acc_number']" position="after">
-                    <field name="company_type" optional="show"/>
                     <field name="cci_number" optional="show"/>
                     <field name="entity_type" optional="show"/>
                 </xpath>

@@ -11,44 +11,62 @@
                     <t t-call="peruanita_bg_layout.peruanita_layout_background">
                         <t t-set="company" t-value="o.company_id"/>
                         <t t-set="contact_info" t-value="o.get_contact_info()"/>
-                        
-                        <div class="page" style="margin-top:20px; margin-bottom:20px;">
-                            
+
+                        <style>
+                            .conditions-text p {
+                                margin-top: 0.3em !important;
+                                margin-bottom: 0.3em !important;
+                                line-height: 1.3 !important;
+                            }
+                            .compact-section {
+                                margin-bottom: 8px !important;
+                            }
+                            .compact-section ul {
+                                margin-top: 5px !important;
+                                margin-bottom: 5px !important;
+                            }
+                            .compact-section li {
+                                margin-bottom: 2px !important;
+                            }
+                        </style>
+
+                        <div class="page" style="margin-top:15px; margin-bottom:15px; font-size: 11px;">
+
                             <!-- Encabezado -->
-                            <div class="row mb-2">
+                            <div class="row compact-section">
                                 <div class="col-12 text-center">
-                                    <h2 style="font-weight: bold; margin-bottom: 5px;">
+                                    <h2 style="font-weight: bold; margin-bottom: 3px; font-size: 16px;">
                                         <t t-esc="o.custom_quotation_number or o.name"/>
                                     </h2>
                                 </div>
                             </div>
 
                             <!-- Fecha -->
-                            <div class="row mb-2">
+                            <div class="row compact-section">
                                 <div class="col-12 text-right">
-                                    <p style="margin-bottom: 10px;">
+                                    <p style="margin-bottom: 5px; text-align:right;">
                                         <t t-esc="o.get_formatted_date()"/>
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Cliente -->
-                            <div class="row mb-2">
+                            <div class="row compact-section">
                                 <div class="col-12">
-                                    <p style="font-weight: bold; margin-bottom: 5px;">
+                                    <p style="font-weight: bold; margin-bottom: 3px; text-align:right;">
                                         <strong>Señores: </strong>
                                         <t style="text-transform: uppercase;" t-esc="o.partner_id.name"/>
                                     </p>
-                                    <p style="font-weight: bold; margin-bottom: 10px;">
+                                    <p style="font-weight: bold; margin-bottom: 5px;">
                                         <strong>Presente. –</strong>
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Asunto -->
-                            <div class="row mb-2" t-if="o.quotation_subject">
+                            <div class="row compact-section" t-if="o.quotation_subject">
                                 <div class="col-12">
-                                    <p style="margin-bottom: 5px;">
+                                    <p style="margin-bottom: 3px;">
                                         <strong>Asunto:</strong>
                                         <t t-esc="o.quotation_subject"/>
                                     </p>
@@ -56,54 +74,54 @@
                             </div>
 
                             <!-- Introducción -->
-                            <div class="row mb-2">
+                            <div class="row compact-section">
                                 <div class="col-12">
-                                    <div t-field="o.company_id.peruanita_intro_text" style="margin-bottom: 10px;"/>
+                                    <div t-field="o.company_id.peruanita_intro_text" class="conditions-text"/>
                                 </div>
                             </div>
 
                             <!-- Tabla de productos -->
-                            <div class="row mb-2">
+                            <div class="row compact-section">
                                 <div class="col-12">
-                                    <table class="table table-sm table-bordered" style="font-size: 12px;">
+                                    <table class="table table-sm table-bordered" style="font-size: 9px;">
                                         <thead style="background-color: #f8f9fa;">
                                             <tr style="font-weight: bold;">
-                                                <th style="width: 35%; text-align: center; padding: 8px;">DESCRIPCIÓN</th>
-                                                <th style="width: 15%; text-align: center; padding: 8px;">MARCA</th>
-                                                <th style="width: 10%; text-align: center; padding: 8px;">CANTIDAD</th>
-                                                <th style="width: 15%; text-align: center; padding: 8px;">UNIDAD</th>
-                                                <th style="width: 12.5%; text-align: center; padding: 8px;">PRECIO UNITARIO</th>
-                                                <th style="width: 12.5%; text-align: center; padding: 8px;">PRECIO TOTAL</th>
+                                                <th style="width: 35%; text-align: center; padding: 4px;">DESCRIPCIÓN</th>
+                                                <th style="width: 15%; text-align: center; padding: 4px;">MARCA</th>
+                                                <th style="width: 10%; text-align: center; padding: 4px;">CANTIDAD</th>
+                                                <th style="width: 15%; text-align: center; padding: 4px;">UNIDAD</th>
+                                                <th style="width: 12.5%; text-align: center; padding: 4px;">PRECIO UNITARIO</th>
+                                                <th style="width: 12.5%; text-align: center; padding: 4px;">PRECIO TOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <t t-foreach="o.order_line" t-as="line">
                                                 <tr t-if="not line.display_type">
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong t-esc="line.name"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong t-esc="line.product_id.product_brand_id.name if line.product_id.product_brand_id else ''"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong t-esc="'{:,.0f}'.format(line.product_uom_qty)"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong t-esc="line.product_uom.name.upper()"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_unit)"/></strong>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_total)"/></strong>
                                                     </td>
                                                 </tr>
                                             </t>
                                             <tr>
-                                                <td colspan="5" style="text-align: right; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td colspan="5" style="text-align: right; padding: 4px; font-weight: bold; background-color: #f8f9fa;">
                                                     TOTAL:
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td style="text-align: center; padding: 4px; font-weight: bold; background-color: #f8f9fa;">
                                                     S/. <t t-esc="'{:,.2f}'.format(o.amount_total)"/>
                                                 </td>
                                             </tr>
@@ -112,59 +130,80 @@
                                 </div>
                             </div>
 
-                            <!-- Condiciones generales -->
-                            <div class="row mb-2">
+                            <!-- Condiciones generales - Se muestra si el booleano está desactivado -->
+                            <div class="row compact-section" t-if="not o.show_default_technical_table">
                                 <div class="col-12">
-                                    <div t-field="o.company_id.peruanita_conditions_text"/>
+                                    <div t-field="o.company_id.peruanita_conditions_text" class="conditions-text"/>
                                 </div>
                             </div>
 
-                            <!-- Mejoras técnicas -->
-                            <div class="row mb-2" t-if="o.technical_improvements_peruanita">
-                                <div class="col-12">
-                                    <span style="font-weight: bold; margin-bottom: 10px;">1.- MEJORAS A LAS ESPECIFICACIONES TÉCNICAS - FACTORES DE EVALUACIÓN</span>
-                                    <div t-field="o.technical_improvements_peruanita"/>
-                                </div>
-                            </div>
-
-                            <!-- Condiciones comerciales -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <span style="font-weight: bold; margin-bottom: 10px;">CONDICIONES COMERCIALES:</span>
-                                    <ul style="list-style-type: disc; margin-left: 20px;">
-                                        <li>Plazo de ejecución/Entrega: Según Especificaciones Técnicas.</li>
-                                        <li><strong>Lugar de entrega: <t t-esc="o.delivery_place"/>.</strong></li>
-                                        <li>Forma de pago: Según bases</li>
-                                        <li>Presentación: Según Especificaciones Técnicas.</li>
-                                        <li>Garantía: <t t-esc="o.warranty_terms"/> / Vigencia: <t t-esc="o.get_quotation_validity_days()"/> días</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Cuentas bancarias -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <t t-set="bank_accounts" t-value="o.get_company_bank_accounts()"/>
-                                    <t t-if="bank_accounts">
-                                        <table class="table table-sm table-bordered" style="font-size: 14px; max-width: 600px;">
+                            <!-- Mejoras técnicas - Solo se muestra si el booleano está activado -->
+                            <t t-if="o.show_default_technical_table">
+                                <div class="row compact-section">
+                                    <div class="col-12">
+                                        <p style="font-weight: bold; margin-bottom: 3px; margin-top: 3px; font-size: 11px;">1.- MEJORAS A LAS ESPECIFICACIONES TÉCNICAS - FACTORES DE EVALUACIÓN</p>
+                                        <table class="table table-sm table-bordered" style="font-size: 10px; margin-top: 3px;">
                                             <thead style="background-color: #f8f9fa;">
                                                 <tr style="font-weight: bold;">
-                                                    <th style="text-align: center; padding: 8px;">Cuentas Bancarias</th>
-                                                    <th style="text-align: center; padding: 8px;">Nro. Cuenta</th>
-                                                    <th style="text-align: center; padding: 8px;">CCI</th>
+                                                    <th style="width: 70%; text-align: center; padding: 3px; vertical-align: middle;">DOCUMENTO</th>
+                                                    <th style="width: 30%; text-align: center; padding: 3px; vertical-align: middle;">CRITERIO RELACIONADO</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding: 3px; vertical-align: top; text-align: justify; line-height: 1.3;">
+                                                        1.- Certificado Técnico Productivo. De lo expuesto por DIGESA, El flujograma de producción descrito en dicho certificado debe estar en función a la previsto en la R.M. N° 451-2006- MINSA, en sus artículos 23 al 30, El flujograma del certificado técnico productivo debe ser concordante con el flujograma con el que se obtuvo la Validación Técnica del Plan HACCP según la línea de procesamiento. de acuerdo al art. 95 del D.S. 004-2014 – SA el otorgamiento de la certificación de la validación Técnica oficial del Plan HACCP por parte de la autoridad de salud representa el cumplimiento de todos los requisitos y condiciones sanitarias del establecimiento aplicando el sistema HACCP, R.M. 451-2006/MINSA capítulo I, art. 6 precisa que dado que los alimentos destinados a programas sociales son considerados de alto riesgo y por la vulnerabilidad de los beneficiarios, el fabricante debe aplicar el sistema HACCP para el control de la calidad sanitaria e inocuidad de los productos que elabora por lo que ambos flujogramas del certificado técnico productivo y de la resolución de validación del Plan HACCP debe ser iguales y congruentes para asegurar las condiciones y requisitos sanitarios.
+                                                    </td>
+                                                    <td style="padding: 3px; vertical-align: top; text-align: center; line-height: 1.3;">
+                                                        Mejoras a las condiciones de procesamiento
+                                                    </td>
+                                                </tr>
+                                                <tr t-if="o.technical_improvements_peruanita">
+                                                    <td colspan="2" style="padding: 3px; vertical-align: top; text-align: justify; line-height: 1.3;">
+                                                        <div t-field="o.technical_improvements_peruanita" style="font-size: 8px;"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Condiciones comerciales -->
+                            <div class="row compact-section">
+                                <div class="col-12">
+                                    <p style="font-weight: bold; margin-bottom: 3px; margin-top: 5px;">CONDICIONES COMERCIALES:</p>
+                                    <ul style="list-style-type: disc; margin-left: 20px; margin-top: 3px; margin-bottom: 5px;">
+                                        <li style="margin-bottom: 2px;">Plazo de ejecución/Entrega: Según Especificaciones Técnicas.</li>
+                                        <li style="margin-bottom: 2px;"><strong>Lugar de entrega: <t t-esc="o.delivery_place"/>.</strong></li>
+                                        <li style="margin-bottom: 2px;">Forma de pago: Según bases</li>
+                                        <li style="margin-bottom: 2px;">Presentación: Según Especificaciones Técnicas.</li>
+                                        <li style="margin-bottom: 2px;">Garantía: <t t-esc="o.warranty_terms"/> / Vigencia: <t t-esc="o.get_quotation_validity_days()"/> días</li>
+                                    </ul>
+
+                                    <!-- Cuentas bancarias integradas -->
+                                    <t t-set="bank_accounts" t-value="o.get_company_bank_accounts()"/>
+                                    <t t-if="bank_accounts">
+                                        <p style="font-weight: bold; margin-bottom: 3px; margin-top: 8px;">CUENTAS BANCARIAS:</p>
+                                        <table class="table table-sm table-bordered" style="font-size: 9px; margin-top: 3px;">
+                                            <thead style="background-color: #f8f9fa;">
+                                                <tr style="font-weight: bold;">
+                                                    <th style="text-align: center; padding: 4px;">BANCO</th>
+                                                    <th style="text-align: center; padding: 4px;">NRO. CUENTA</th>
+                                                    <th style="text-align: center; padding: 4px;">CCI</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <t t-foreach="bank_accounts" t-as="bank">
                                                     <tr>
-                                                        <td style="padding: 8px; font-weight: bold;">
+                                                        <td style="padding: 4px; font-weight: bold; text-align: center;">
                                                             <t t-esc="bank['bank']"/> (<t t-esc="bank['type']"/>)
                                                         </td>
-                                                        <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                        <td style="text-align: center; padding: 4px; font-weight: bold;">
                                                             <t t-esc="bank['account']"/>
                                                         </td>
-                                                        <td style="text-align: center; padding: 8px; font-weight: bold;">
-                                                            <strong t-esc="bank['cci']"/>
+                                                        <td style="text-align: center; padding: 4px; font-weight: bold;">
+                                                            <t t-esc="bank['cci']"/>
                                                         </td>
                                                     </tr>
                                                 </t>
@@ -175,24 +214,24 @@
                             </div>
 
                             <!-- Despedida y firma -->
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <p style="margin-bottom: 30px;">Atentamente,</p>
-                                    <p style="margin-bottom: 80px;"></p>
-                                    <div style="margin-bottom: 20px;">
-                                        <p style="border-top: 1px solid black; width: 300px; text-align: center; margin-bottom: 5px;"></p>
-                                        <p style="font-weight: bold; margin-bottom: 5px;">Firma y Sello</p>
+                            <div class="row compact-section" style="margin-top: 10px;">
+                                <div class="col-12" style="text-align: center;">
+                                    <p style="margin-bottom: 15px; margin-top: 8px;">Atentamente,</p>
+                                    <p style="margin-bottom: 40px;"></p>
+                                    <div style="margin-bottom: 10px; display: inline-block;">
+                                        <p style="border-top: 1px solid black; width: 250px; text-align: center; margin-bottom: 3px;"></p>
+                                        <p style="font-weight: bold; margin-bottom: 3px; text-align: center;">Firma y Sello</p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Información de contacto -->
-                            <div class="row">
+                            <div class="row" style="margin-top: 8px;">
                                 <div class="col-12">
-                                    <p t-if="o.company_id.peruanita_phone">
+                                    <p t-if="o.company_id.peruanita_phone" style="margin-bottom: 3px;">
                                         <strong>Contacto: </strong><t t-esc="o.company_id.peruanita_phone"/>
                                     </p>
-                                    <p t-if="o.company_id.peruanita_email">
+                                    <p t-if="o.company_id.peruanita_email" style="margin-bottom: 3px;">
                                         <strong>Email: </strong><t t-esc="o.company_id.peruanita_email"/>
                                     </p>
                                 </div>
@@ -212,13 +251,13 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="peruanita_bg_layout.gibbor_layout_background">
                         <t t-set="company" t-value="o.company_id"/>
-                        
-                        <div class="page" style="margin-top:20px; margin-bottom:20px;">
+
+                        <div class="page" style="margin-top:20px; margin-bottom:20px; font-size: 11px;">
 
                             <!-- Encabezado -->
                             <div class="row mb-2">
                                 <div class="col-12 text-center">
-                                    <h2 style="font-weight: bold; margin-bottom: 5px;">
+                                    <h2 style="font-weight: bold; margin-bottom: 5px; font-size: 16px;">
                                         <t t-esc="o.custom_quotation_number or o.name"/>
                                     </h2>
                                 </div>
@@ -260,47 +299,47 @@
                             <!-- Tabla de productos GIBBOR -->
                             <div class="row mb-2">
                                 <div class="col-12">
-                                    <table class="table table-sm table-bordered" style="font-size: 12px;">
+                                    <table class="table table-sm table-bordered" style="font-size: 10px;">
                                         <thead style="background-color: #f8f9fa;">
                                             <tr style="font-weight: bold;">
-                                                <th style="width: 8%; text-align: center; padding: 8px;">CNT</th>
-                                                <th style="width: 37%; text-align: center; padding: 8px;">PRODUCTO</th>
-                                                <th style="width: 15%; text-align: center; padding: 8px;">MARCA</th>
-                                                <th style="width: 12%; text-align: center; padding: 8px;">UNIDAD DE MEDIDA</th>
-                                                <th style="width: 14%; text-align: center; padding: 8px;">PRECIO UNITARIO</th>
-                                                <th style="width: 14%; text-align: center; padding: 8px;">PRECIO TOTAL</th>
+                                                <th style="width: 8%; text-align: center; padding: 6px;">CNT</th>
+                                                <th style="width: 37%; text-align: center; padding: 6px;">PRODUCTO</th>
+                                                <th style="width: 15%; text-align: center; padding: 6px;">MARCA</th>
+                                                <th style="width: 12%; text-align: center; padding: 6px;">UNIDAD DE MEDIDA</th>
+                                                <th style="width: 14%; text-align: center; padding: 6px;">PRECIO UNITARIO</th>
+                                                <th style="width: 14%; text-align: center; padding: 6px;">PRECIO TOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <t t-set="line_number" t-value="1"/>
                                             <t t-foreach="o.order_line" t-as="line">
                                                 <tr t-if="not line.display_type">
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line_number"/>
                                                         <t t-set="line_number" t-value="line_number + 1"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.name"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.product_id.product_brand_id.name if line.product_id.product_brand_id else 'MAXIFORT'"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.product_uom.name.upper()"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_unit)"/></strong>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_total)"/></strong>
                                                     </td>
                                                 </tr>
                                             </t>
                                             <tr>
-                                                <td colspan="5" style="text-align: right; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td colspan="5" style="text-align: right; padding: 6px; font-weight: bold; background-color: #f8f9fa;">
                                                     TOTAL
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td style="text-align: center; padding: 6px; font-weight: bold; background-color: #f8f9fa;">
                                                     S/. <t t-esc="'{:,.2f}'.format(o.amount_total)"/>
                                                 </td>
                                             </tr>
@@ -361,13 +400,13 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="peruanita_bg_layout.corpealim_layout_background">
                         <t t-set="company" t-value="o.company_id"/>
-                        
-                        <div class="page" style="margin-top:20px; margin-bottom:20px;">
+
+                        <div class="page" style="margin-top:20px; margin-bottom:20px; font-size: 11px;">
 
                             <!-- Encabezado -->
                             <div class="row mb-2">
                                 <div class="col-12 text-center">
-                                    <h2 style="font-weight: bold; margin-bottom: 5px; text-decoration: underline;">
+                                    <h2 style="font-weight: bold; margin-bottom: 5px; text-decoration: underline; font-size: 16px;">
                                         <t t-esc="o.custom_quotation_number or o.name"/>
                                     </h2>
                                 </div>
@@ -409,45 +448,45 @@
                             <!-- Tabla de productos CORPEALIM con CNT -->
                             <div class="row mb-2">
                                 <div class="col-12">
-                                    <table class="table table-sm table-bordered" style="font-size: 11px;">
+                                    <table class="table table-sm table-bordered" style="font-size: 10px;">
                                         <thead style="background-color: #f8f9fa;">
                                             <tr style="font-weight: bold;">
-                                                <th style="width: 8%; text-align: center; padding: 8px;">CNT</th>
-                                                <th style="width: 37%; text-align: center; padding: 8px;">PRODUCTO</th>
-                                                <th style="width: 12%; text-align: center; padding: 8px;">MARCA</th>
-                                                <th style="width: 10%; text-align: center; padding: 8px;">UNIDA D DE MEDID A</th>
-                                                <th style="width: 14%; text-align: center; padding: 8px;">PRECIO UNITARIO</th>
-                                                <th style="width: 14%; text-align: center; padding: 8px;">PRECIO TOTAL</th>
+                                                <th style="width: 8%; text-align: center; padding: 6px;">CNT</th>
+                                                <th style="width: 37%; text-align: center; padding: 6px;">PRODUCTO</th>
+                                                <th style="width: 12%; text-align: center; padding: 6px;">MARCA</th>
+                                                <th style="width: 10%; text-align: center; padding: 6px;">UNIDA D DE MEDID A</th>
+                                                <th style="width: 14%; text-align: center; padding: 6px;">PRECIO UNITARIO</th>
+                                                <th style="width: 14%; text-align: center; padding: 6px;">PRECIO TOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <t t-foreach="o.order_line" t-as="line">
                                                 <tr t-if="not line.display_type">
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="'{:,.0f}'.format(line.product_uom_qty)"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.name"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.product_id.product_brand_id.name if line.product_id.product_brand_id else ''"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong t-esc="line.product_uom.name.upper()"/>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_unit)"/></strong>
                                                     </td>
-                                                    <td style="text-align: center; padding: 8px; font-weight: bold;">
+                                                    <td style="text-align: center; padding: 6px; font-weight: bold;">
                                                         <strong>S/. <t t-esc="'{:,.2f}'.format(line.price_total)"/></strong>
                                                     </td>
                                                 </tr>
                                             </t>
                                             <tr>
-                                                <td colspan="5" style="text-align: right; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td colspan="5" style="text-align: right; padding: 6px; font-weight: bold; background-color: #f8f9fa;">
                                                     TOTAL
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; font-weight: bold; background-color: #f8f9fa;">
+                                                <td style="text-align: center; padding: 6px; font-weight: bold; background-color: #f8f9fa;">
                                                     S/. <t t-esc="'{:,.2f}'.format(o.amount_total)"/>
                                                 </td>
                                             </tr>

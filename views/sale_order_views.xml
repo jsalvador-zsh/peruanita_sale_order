@@ -56,6 +56,14 @@
                     <!-- PÁGINA ESPECÍFICA PERUANITA -->
                     <page string="Información Peruanita" name="quotation_info_peruanita"
                           invisible="quotation_company_type != 'peruanita'">
+                        <group string="Control de Contenido">
+                            <field name="show_default_technical_table"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Instrucciones:</strong><br/>
+                                • <strong>Activado:</strong> Muestra la tabla de mejoras técnicas estándar (Certificado Técnico Productivo, DIGESA, HACCP)<br/>
+                                • <strong>Desactivado:</strong> Muestra el contenido del campo "Condiciones Generales PERUANITA" configurado en la empresa
+                            </div>
+                        </group>
                         <group string="Mejoras a las Especificaciones Técnicas">
                             <field name="technical_improvements_peruanita" nolabel="1" widget="html"/>
                         </group>

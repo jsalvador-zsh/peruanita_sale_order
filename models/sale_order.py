@@ -71,10 +71,17 @@ class SaleOrder(models.Model):
         string='Mejoras a las Especificaciones Técnicas (Corpealim)',
         help='Factores de evaluación para Corpealim'
     )
-    
+
     corpealim_attention = fields.Char(
         string='Atención',
         help='Persona de atención en Corpealim'
+    )
+
+    # ============ CONTROL DE VISUALIZACIÓN ============
+    show_default_technical_table = fields.Boolean(
+        string='Mostrar Tabla de Mejoras Técnicas por Defecto',
+        default=True,
+        help='Si está activado, muestra la tabla de mejoras técnicas estándar (DIGESA, HACCP). Si está desactivado, muestra el contenido del campo de condiciones generales.'
     )
     
     # Override del método create
@@ -180,32 +187,34 @@ class SaleOrder(models.Model):
         return contact_info
     
     def get_company_bank_accounts(self):
-        """Retorna las cuentas bancarias filtradas por tipo de empresa"""
-        bank_accounts = []
-        
-        company_banks = self.env['res.partner.bank'].search([
-            ('partner_id', '=', self.company_id.partner_id.id),
-            ('company_type', '=', self.quotation_company_type)
-        ])
-        
-        for bank in company_banks:
-            bank_name = bank.bank_id.name if bank.bank_id else 'Banco'
-            
-            if bank.entity_type == 'public':
-                bank_type = 'Entidades Públicas'
-            elif bank.entity_type == 'private':
-                bank_type = 'Entidades Privadas'
-            else:
-                bank_type = 'General'
-            
-            bank_accounts.append({
-                'type': bank_type,
-                'bank': bank_name,
-                'account': bank.acc_number,
-                'cci': bank.cci_number or ''
-            })
-        
-        return bank_accounts
+        """Retorna las cuentas bancarias de la compañía desde res.partner.bank"""
+        bank_accounts_list = []
+
+        # Buscar las cuentas bancarias de la compañía actual
+        company = self.company_id or self.env.company
+
+        # Obtener solo las cuentas bancarias de tipo público y privado
+        bank_accounts = self.env['res.partner.bank'].search([
+            ('partner_id', '=', company.partner_id.id),
+            ('entity_type', 'in', ['public', 'private'])
+        ], order='entity_type, bank_id')
+
+        # Mapeo de tipos de entidad
+        entity_type_labels = {
+            'public': 'Entidades Públicas',
+            'private': 'Entidades Privadas'
+        }
+
+        for account in bank_accounts:
+            bank_data = {
+                'bank': account.bank_id.name if account.bank_id else 'N/A',
+                'type': entity_type_labels.get(account.entity_type, ''),
+                'account': account.acc_number or 'N/A',
+                'cci': account.cci_number or 'N/A'
+            }
+            bank_accounts_list.append(bank_data)
+
+        return bank_accounts_list
     
     def get_company_info_by_type(self):
         """Retorna la información de la empresa según el tipo seleccionado"""

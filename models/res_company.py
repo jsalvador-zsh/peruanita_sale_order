@@ -34,7 +34,7 @@ class ResCompany(models.Model):
         string='Condiciones Generales Peruanita',
         default='''<p>Dicha cotización es a todo costo, incluye todos los tributos, seguros, transportes, inspecciones y pruebas.</p>'''
     )
-    
+
     # ============ CONFIGURACIÓN GIBBOR ============
     gibbor_logo = fields.Binary(
         string='Logo Gibbor',

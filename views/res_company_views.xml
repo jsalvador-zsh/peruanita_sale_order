@@ -36,10 +36,10 @@
                         <group string="Condiciones Generales PERUANITA">
                             <field name="peruanita_conditions_text" nolabel="1" widget="html"/>
                         </group>
-                        
+
                         <group>
                             <div class="alert alert-info" role="alert">
-                                <strong>Nota:</strong> PERUANITA usa un layout personalizado con background. 
+                                <strong>Nota:</strong> PERUANITA usa un layout personalizado con background.
                                 No requiere logo adicional.
                             </div>
                         </group>

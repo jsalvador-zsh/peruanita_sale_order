@@ -11,6 +11,7 @@
             <field name="report_file">peruanita_sale_order.report_saleorder_peruanita</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="peruanita_bg_layout.paperformat_a4_vertical"/>
             <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
         </record>
 
@@ -23,6 +24,7 @@
             <field name="report_file">peruanita_sale_order.report_saleorder_gibbor</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="peruanita_bg_layout.paperformat_a4_vertical"/>
             <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
         </record>
 
@@ -35,6 +37,7 @@
             <field name="report_file">peruanita_sale_order.report_saleorder_corpealim</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="peruanita_bg_layout.paperformat_a4_vertical"/>
             <field name="print_report_name">'Cotización - %s' % (object.custom_quotation_number or object.name)</field>
         </record>
 
